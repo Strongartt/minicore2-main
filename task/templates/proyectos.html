@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="container">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Agregar un proyecto
+    </button>
+
+    <!-- Modal -->
+    <form action="{% url 'project' %}" method="post">
+        {% csrf_token %}
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Ingresar Proyecto</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Ingrese un nuevo empleado: </p>
+                        <div class="input-group">
+                            <span class="input-group-text">Nombre del proyecto</span>
+                            <input type="text" aria-label="First name" class="form-control" name="name">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Agregar proyecto</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre del proyecto</th>
+                <th scope="col">
+                    <div class="container text-center">
+                        Editar
+                    </div>
+                </th>
+                <th scope="col">
+                    <div class="container text-center">
+                        Eliminar
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in project %}
+            <tr>
+                <th scope="row">{{ project.id }}</th>
+                <td>{{ project.name }}</td>
+                <td>
+                    <div class="container text-center">
+                        <a href="{% url 'project_edit' project.id %}" style="color: white; text-decoration: none;">
+                            <i class="bi bi-pen-fill"></i>
+                        </a>
+                    </div>
+                </td>
+                <td>
+                    <div class="container text-center">
+                        <a href="{% url 'project_delete' project.id %}" style="color: white; text-decoration: none;">
+                            <i class="bi bi-trash3-fill"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

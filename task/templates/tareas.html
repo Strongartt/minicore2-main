@@ -1,0 +1,132 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Agregar una nueva tarea
+    </button>
+
+    <!-- Modal -->
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Ingresar tarea</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="inputGroupSelect01">Seleccionar Empleado</label>
+                            <select class="form-select" id="inputGroupSelect01" name="employee_id">
+                                <option selected>Seleccionar...</option>
+                                {% for employee in employee %}
+                                <option value="{{ employee.id }}">{{ employee.first_name }} {{ employee.last_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="inputGroupSelect01">Seleccionar Proyecto</label>
+                            <select class="form-select" id="inputGroupSelect01" name="project_id">
+                                <option selected>Seleccionar...</option>
+                                {% for project in project %}
+                                <option value="{{ project.id }}">{{ project.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Descripción de la tarea</span>
+                            <input type="text" aria-label="First name" class="form-control" name="description">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Fecha de inicio</span>
+                            <input type="date" aria-label="First name" class="form-control" name="date_start">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Tiempo estimado en días</span>
+                            <input type="number" aria-label="First name" class="form-control" name="estimate_time">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="inputGroupSelect01">Seleccionar estatus</label>
+                            <select class="form-select" id="inputGroupSelect01" name="status">
+                                <option value="Pending">No empezado</option>
+                                <option value="In Progress">En progreso</option>
+                                <option value="Done">Completado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Tarea</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Empleado encargado</th>
+                <th scope="col">Proyecto relacionado</th>
+                <th scope="col">Descripción del proyecto</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Tiempo estimado en horas</th>
+                <th scope="col">status</th>
+                <th scope="col">
+                    <div class="container text-center">
+                        Editar
+                    </div>
+                </th>
+                <th scope="col">
+                    <div class="container text-center">
+                        Eliminar
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in task %}
+            <tr>
+                <th scope="row">{{ task.id }}</th>
+                <td>{{ task.id_employee.first_name }} {{ task.id_employee.last_name }}</td>
+                <td>{{ task.id_project.name }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.date_start }}</td>
+                <td>{{ task.estimate_time }}</td>
+                <td>
+                    {% if task.status == 'Pending' %}
+                    <span class="badge bg-danger">No empezado</span>
+                    {% elif task.status == 'In Progress' %}
+                    <span class="badge bg-warning">En progreso</span>
+                    {% else %}
+                    <span class="badge bg-success">Completado</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="container text-center">
+                        <a href="{% url 'task_edit' task.id %}" style="color: white; text-decoration: none;">
+                            <i class="bi bi-pen-fill"></i>
+                        </a>
+                    </div>
+                </td>
+                <td>
+                    <div class="container text-center">
+                        <a href="{% url 'task_delete' task.id %}" style="color: white; text-decoration: none;">
+                            <i class="bi bi-trash3-fill"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

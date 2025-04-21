@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="inputGroupSelect01">Seleccionar Empleado</label>
+            <select class="form-select" id="inputGroupSelect01" name="employee_id">
+                <option selected>Seleccionar...</option>
+                {% for employee in employee %}
+                <option value="{{ employee.id }}" {% if employee.id == task.id_employee.id %} selected {% endif %}>{{ employee.first_name }} {{ employee.last_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="inputGroupSelect01">Seleccionar Proyecto</label>
+            <select class="form-select" id="inputGroupSelect01" name="project_id">
+                <option selected>Seleccionar...</option>
+                {% for project in project %}
+                <option value="{{ project.id }}" {% if project.id == task.id_project.id %} selected {% endif %}>{{ project.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <div class="input-group mb-3">
+            <span class="input-group-text">Descripción de la tarea</span>
+            <input type="text" aria-label="First name" class="form-control" name="description" value="{{ task.description }}">
+        </div>
+    
+        <div class="input-group mb-3">
+            <span class="input-group-text">Fecha de inicio</span>
+            <input type="date" aria-label="First name" class="form-control" name="date_start" value="{{ task.date_start }}">
+        </div>
+    
+        <div class="input-group mb-3">
+            <span class="input-group-text">Tiempo estimado en días</span>
+            <input type="number" aria-label="First name" class="form-control" name="estimate_time" value="{{ task.estimate_time }}">
+        </div>
+    
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="inputGroupSelect01">Seleccionar estatus</label>
+            <select class="form-select" id="inputGroupSelect01" name="status">
+                <option value="Pending" {% if task.status == 'Pending' %} selected {% endif %}>No empezado</option>
+                <option value="In Progress" {% if task.status == 'In Progress' %} selected {% endif %}>En progreso</option>
+                <option value="Done" {% if task.status == 'Done' %} selected {% endif %}>Completado</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+{% endblock %}

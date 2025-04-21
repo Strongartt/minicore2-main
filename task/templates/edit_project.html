@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+    <form action="{% url 'project_edit' project.id %}" method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <span class="input-group-text">Nombre del proyecto</span>
+            <input type="text" aria-label="First name" class="form-control" name="name" value="{{ project.name }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+{% endblock %}

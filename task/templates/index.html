@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="container">
+    <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <span class="input-group-text">Fecha de inicio</span>
+            <input type="date" aria-label="First name" class="form-control" name="date_start" value="{{ date_start }}">
+        </div>
+    
+        <div class="input-group mb-3">
+            <span class="input-group-text">Fecha de fin</span>
+            <input type="date" aria-label="First name" class="form-control" name="date_end" value="{{ date_end }}">
+        </div>
+    
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+
+    {% if task_in_process_date %}
+    <h1>Tareas en proceso</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Empleado</th>
+                <th scope="col">Proyecto</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Fecha de fin</th>
+                <th scope="col">Días de demora</th>
+                <th scope="col">Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in task_in_process_date %}
+            <tr>
+                <td>{{ task.id_employee.first_name }} {{ task.id_employee.last_name }}</td>
+                <td>{{ task.id_project.name }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.date_start }}</td>
+                <td>{{ task.date_end }}</td>
+                <td>{{ task.delay }} días de demora</td>
+                <td>{{ task.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endif %}
+
+{% endblock %}

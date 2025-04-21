@@ -1,0 +1,80 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="container">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Agregar un empleado
+    </button>
+
+    <!-- Modal -->
+    <form action="{% url 'employee' %}" method="post">
+        {% csrf_token %}
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Ingresar empleado</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <span class="input-group-text">Nombre/s y apellido/s</span>
+                            <input type="text" aria-label="First name" class="form-control" name="first_name">
+                            <input type="text" aria-label="Last name" class="form-control" name="last_name">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Agregar empleado</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombres</th>
+                <th scope="col">Apellidos</th>
+                <th scope="col">
+                    <div class="container text-center">
+                        Editar
+                    </div>
+                </th>
+                <th scope="col">
+                    <div class="container text-center">
+                        Eliminar
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for empleado in employee %}
+            <tr>
+                <th scope="row">{{ empleado.id }}</th>
+                <td>{{ empleado.first_name }}</td>
+                <td>{{ empleado.last_name }}</td>
+                <td>
+                    <div class="container text-center">
+                        <a href="{% url 'employee_edit' empleado.id %}" style="color: white; text-decoration: none;">    
+                            <i class="bi bi-pen-fill"></i>
+                        </a>
+                    </div>
+                </td>
+                <td>
+                    <div class="container text-center">
+                        <a href="{% url 'employee_delete' empleado.id %}" style="color: white; text-decoration: none;">    
+                            <i class="bi bi-trash3-fill"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
